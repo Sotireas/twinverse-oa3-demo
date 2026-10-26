@@ -92,7 +92,7 @@
 .v3-cta:hover{background:#2c5680}
 .v3-cta.light{background:#edf4f8;border-color:#dbe6ef;color:#29445d}
 .v3-control{border:1px solid #dbe4ed;border-radius:9px;padding:10px 12px;color:#29415b;background:white;font-size:12px;max-width:250px}
-.dash-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-bottom:17px}
+.dash-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-bottom:17px}
 .dash-kpi{border:1px solid #e3ebf2;border-radius:13px;background:#f9fbfd;padding:16px 17px;min-width:0}
 .dash-kpi strong{display:block;font-size:27px;font-weight:800;line-height:1.1;letter-spacing:-.035em}
 .dash-kpi span{display:block;margin-top:4px;color:#687f94;font-size:11px}
@@ -147,7 +147,7 @@
 .scope-banner{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 15px;background:#e8f2ff;color:#264d77;border:1px solid #b6cee5;border-radius:9px;margin-bottom:12px;font-size:12px}
 .scope-banner[hidden]{display:none}
 .scope-banner button{border:0;background:none;color:#1b4c87;font-weight:750;font-size:11px}
-@media(max-width:930px){.dash-grid{grid-template-columns:1fr}.dash-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.dash-domain-row{grid-template-columns:160px 1fr 25px}}
+@media(max-width:930px){.dash-grid{grid-template-columns:1fr}.dash-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.dash-domain-row{grid-template-columns:160px 1fr 25px}}
 @media(max-width:620px){.dash-kpis{grid-template-columns:1fr}.v3-section{padding:18px 14px}.v3-head h2{font-size:21px}.dash-domain-row{grid-template-columns:115px 1fr 23px;gap:7px}.dash-domain-name{font-size:10px}.dash-kpi{padding:13px}.dash-kpi strong{font-size:23px}.sankey-records{grid-template-columns:1fr}.sankey-chart{min-width:850px}.sankey-frame{margin-left:-7px;margin-right:-7px}}
 
 
@@ -313,7 +313,7 @@ const DASH_KIND_COLOR={tool:'#5cb9aa',primary:'#648de0',review:'#e5a45d'};
 function dashboardSpan(svg,title,v){const element=document.createElement('span');element.className='legend-dot';element.style.background=svg;return element}
 function makeScopeButton(parent,label,rows,desc){const b=el(parent,'button','',label);b.type='button';b.title=desc||('Show '+rows.length+' matching entries');b.addEventListener('click',()=>selectInCatalogue(rows,label));return b}
 function renderDashboard(){
- const k=$('dashKPIs');k.replaceChildren();for(const [value,label] of [[domainList.length,'Displayed domain groups'],[count(r=>r.kind!=='tool'),'Selected scientific publications'],[new Set(RECORDS.filter(r=>r.kind!=='tool').map(r=>r.domain)).size,'Research domains']]){const card=el(k,'div','dash-kpi');el(card,'strong','',String(value));el(card,'span','',label)}
+ const k=$('dashKPIs');k.replaceChildren();for(const [value,label] of [[count(r=>r.kind!=='tool'),'Selected scientific publications'],[new Set(RECORDS.filter(r=>r.kind!=='tool').map(r=>r.domain)).size,'Research domains']]){const card=el(k,'div','dash-kpi');el(card,'strong','',String(value));el(card,'span','',label)}
  const legend=$('dashLegend');legend.replaceChildren();for(const typ of ['tool','primary','review']){const item=el(legend,'span','');const dot=el(item,'i','legend-dot');dot.style.background=DASH_KIND_COLOR[typ];el(item,'span','',TYPE_LABELS[typ]);}
  const box=$('dashDomainChart');box.replaceChildren();const maximum=Math.max(...domainList.map(d=>count(r=>r.domain===d)));
  for(const d of domainList.slice().sort((a,b)=>count(r=>r.domain===b)-count(r=>r.domain===a))){const group=RECORDS.filter(r=>r.domain===d),row=el(box,'div','dash-domain-row');el(row,'span','dash-domain-name',d);const track=el(row,'div','dash-track');track.setAttribute('role','group');track.setAttribute('aria-label',d);
